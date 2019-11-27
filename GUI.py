@@ -189,6 +189,7 @@ class Window():
         self.name = self.wks.cell(self.row_number, 2).value
         self.patron_email = self.wks.cell(self.row_number, 3).value
         self.Ticketnum = str(ticketNumEntry.get())
+        print(1)
 
     def findTicket(self,ticketNumEntry):
         self.Ticketnum = str(ticketNumEntry.get())
