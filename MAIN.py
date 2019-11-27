@@ -7,7 +7,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
-
+from datetime import date
 scope = ['https://spreadsheets.google.com/feeds',
        'https://www.googleapis.com/auth/drive']
 
@@ -370,9 +370,10 @@ def spreadsheet_update():
 
            #   Action type: Picked Up
            elif action_type == 1:
-               date = input('Enter date of pickup (month/date/year)')
+               date_1 = date.today().strftime("%m/%d/%Y")
                format_cell_range(wks, 'A' + rowstr + ':AC' + rowstr, fmtpickedup)
-               wks.update_cell(row_number, 18, date)
+               wks.update_cell(row_number, 18, date_1)
+               print("today's date is %s",date_1)
                print("3D Print has been picked up\n")
                print("Spreadsheet Updated")
                break

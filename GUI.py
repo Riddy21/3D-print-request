@@ -10,6 +10,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
+from datetime import date
 
 
 class Window():
@@ -119,8 +120,7 @@ class Window():
 
         tk.Label(self.titleFrame, text="").pack()
 
-        tk.Button(self.titleFrame, text="New Submission Processing", width="40", pady="5").pack()
-        tk.Button(self.titleFrame, text="New Manual Submission Processing", width="40", pady="5").pack()
+        tk.Button(self.titleFrame, text="New Submission Processing", width="40", pady="5", command = self.getInfoNewEntry).pack()
         tk.Button(self.titleFrame, text="Ready For Pickup", width="40", pady="5", command=self.getInfo).pack()
         tk.Button(self.titleFrame, text="Delay Printing", width="40", pady="5", command=self.getInfo).pack()
         tk.Button(self.titleFrame, text="Denied", width="40", pady="5", command=self.getInfo).pack()
@@ -185,11 +185,53 @@ class Window():
         tk.Entry(self.infoFrame, textvariable=emailEntry).pack()
         tk.Button(self.infoFrame, text = "Go", command = lambda:self.definePatronInfo(ticketNumEntry)).pack()
         tk.Button(self.infoFrame, text="Back to Menu", command=self.backToMenu).pack()
+    def getInfoNewEntry(self):
+        self.wks = self.workSDict[self.workSheet.get()]
+        self.titleFrame.destroy()
+        self.infoFrame = tk.Frame(self.window)
+        self.infoFrame.pack()
+        nameEntry = tk.StringVar(self.infoFrame, value=self.name)
+        ticketNumEntry = tk.StringVar(self.infoFrame, value = self.Ticketnum)
+        emailEntry = tk.StringVar(self.infoFrame, value = self.patron_email)
+        StaffInitials = tk.StringVar(self.infoFrame)
+        dateToday = tk.StringVar(self.infoFrame, value = date.today().strftime("%m/%d/%Y"))
+        CourseYN = tk.IntVar()
+        CourseCode = tk.StringVar(self.infoFrame)
+        affiliation = tk.StringVar(self.infoFrame)
+        department = tk.StringVar(self.infoFrame)
+        handle = tk.StringVar(self.infoFrame)
+        SD = tk.StringVar(self.infoFrame)
+        Fname= tk.StringVar(self.infoFrame)
+        time = tk.StringVar(self.infoFrame)
+        tk.Label(self.infoFrame, text="Enter Ticket #:").pack()
+        tk.Entry(self.infoFrame, textvariable=ticketNumEntry).pack()
+        tk.Label(self.infoFrame, text="Enter Patron Name:").pack()
+        tk.Entry(self.infoFrame, textvariable=nameEntry).pack()
+        tk.Label(self.infoFrame, text="Enter Patron Email:").pack()
+        tk.Entry(self.infoFrame, textvariable=emailEntry).pack()
+        tk.Label(self.infoFrame, text="Enter Date:").pack()
+        tk.Entry(self.infoFrame, textvariable=dateToday).pack()
+        tk.Label(self.infoFrame, text="Enter Staff Initials:").pack()
+        tk.Entry(self.infoFrame, textvariable=StaffInitials).pack()
+        tk.Label(self.infoFrame, text="Is it for a course?").pack()
+        CourseYNF = tk.LabelFrame(self.infoFrame)
+        CourseYNF.pack()
+        tk.Radiobutton(CourseYNF,text="Yes", padx=20,variable=CourseYN, value=1).pack(side = "left")
+        tk.Radiobutton(CourseYNF, text="No",padx=20,variable=CourseYN,value=0).pack(side = "left")
+        tk.Label(self.infoFrame, text="Enter Course Code:").pack()
+        tk.Entry(self.infoFrame, textvariable=CourseCode).pack()
+        tk.Label(self.infoFrame, text="Enter affiliation:").pack()
+        tk.Entry(self.infoFrame, textvariable=affiliation).pack()
+
+
+        #tk.Button(self.infoFrame, text = "Go", command = lambda:self.defineNewPatronInfo(nameEntry,ticketEntry,emailEntry,date,StaffInitials,CourseYN,CourseCode,affliation,department,research,ownC,consent,handle,SD,Fname,time)).pack()
+        tk.Button(self.infoFrame, text="Back to Menu", command=self.backToMenu).pack()
+
+    #def defineNewPatronInfo(self,nameEntry,ticketEntry,emailEntry,date,StaffInitials,CourseYN,CourseCode,affliation,department,research,ownC,consent,handle,SD,Fname,time):
     def definePatronInfo(self,ticketNumEntry):
         self.name = self.wks.cell(self.row_number, 2).value
         self.patron_email = self.wks.cell(self.row_number, 3).value
         self.Ticketnum = str(ticketNumEntry.get())
-        print(self.name,self.patron_email,self.Ticketnum)
 
     def findTicket(self,ticketNumEntry):
         self.Ticketnum = str(ticketNumEntry.get())
@@ -223,6 +265,5 @@ class Window():
                 infoLab1.update()
                 time.sleep(1)
                 infoLab1.destroy()
-
 
 Window()
