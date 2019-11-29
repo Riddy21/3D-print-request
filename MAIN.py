@@ -370,10 +370,9 @@ def spreadsheet_update():
 
            #   Action type: Picked Up
            elif action_type == 1:
-               date_1 = date.today().strftime("%m/%d/%Y")
+               date = input('Enter date of pickup (month/date/year)')
                format_cell_range(wks, 'A' + rowstr + ':AC' + rowstr, fmtpickedup)
-               wks.update_cell(row_number, 18, date_1)
-               print("today's date is %s",date_1)
+               wks.update_cell(row_number, 18, date)
                print("3D Print has been picked up\n")
                print("Spreadsheet Updated")
                break

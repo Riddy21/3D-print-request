@@ -250,16 +250,51 @@ class Window():
         tk.Entry(self.infoFrame, textvariable=SD).pack()
         tk.Label(self.infoFrame, text="Print Time:").pack()
         tk.Entry(self.infoFrame, textvariable=Ptime).pack()
-
-
-
-
-
-
-        #tk.Button(self.infoFrame, text = "Go", command = lambda:self.defineNewPatronInfo(nameEntry,ticketEntry,emailEntry,date,StaffInitials,CourseYN,CourseCode,affliation,department,research,ownC,consent,handle,SD,Fname,time)).pack()
+        tk.Button(self.infoFrame, text = "Submit", command = lambda:self.defineNewPatronInfo(nameEntry.get(),ticketNumEntry.get(),emailEntry.get(),dateToday.get(),StaffInitials.get(),CourseYN.get(),CourseCode.get(),affiliation.get(),department.get(),research.get(),ownC.get(),consent.get(),handle.get(),SD.get(),Fname.get(),Ptime.get())).pack()
         tk.Button(self.infoFrame, text="Back to Menu", command=self.backToMenu).pack()
 
-    #def defineNewPatronInfo(self,nameEntry,ticketEntry,emailEntry,date,StaffInitials,CourseYN,CourseCode,affliation,department,research,ownC,consent,handle,SD,Fname,time):
+    def defineNewPatronInfo(self,nameEntry,ticketEntry,emailEntry,dateToday,StaffInitials,CourseYN,CourseCode,affiliation,department,research,ownC,consent,handle,SD,Fname,Ptime):
+        all = self.wks.get_all_values()
+        end_row = len(all) + 1
+        if CourseYN == 0:
+            CourseYN = "N"
+        else:
+            CourseYN = "Y"
+        if research == 0:
+            research = "N"
+        else:
+            research = "Y"
+        if ownC == 0:
+            OwnC = "N"
+        else:
+            OwnC = "Y"
+        if consent == 0:
+            consent = "N"
+        else:
+            consent = "Y"
+        self.wks.update_cell(end_row, 1, ticketEntry)
+        self.wks.update_cell(end_row, 2, nameEntry)
+        self.wks.update_cell(end_row, 3, emailEntry)
+        self.wks.update_cell(end_row, 4, dateToday)
+        self.wks.update_cell(end_row, 5, StaffInitials)
+        self.wks.update_cell(end_row, 6, CourseYN)
+        self.wks.update_cell(end_row, 7, CourseCode)
+        self.wks.update_cell(end_row, 8, affiliation)
+        self.wks.update_cell(end_row, 9, department)
+        self.wks.update_cell(end_row, 10, research)
+        self.wks.update_cell(end_row, 11, OwnC)
+        self.wks.update_cell(end_row, 12, consent)
+        self.wks.update_cell(end_row, 13, handle)
+        self.wks.update_cell(end_row, 14, SD)
+        self.wks.update_cell(end_row, 15, Fname)
+        self.wks.update_cell(end_row, 16, Ptime)
+        infoLab1 = tk.Label(self.infoFrame, text="Submitted!")
+        infoLab1.pack()
+        infoLab1.update()
+        time.sleep(1)
+        infoLab1.destroy()
+        self.infoFrame.destroy()
+        self.StartMenu()
     def definePatronInfo(self,ticketNumEntry):
         self.name = self.wks.cell(self.row_number, 2).value
         self.patron_email = self.wks.cell(self.row_number, 3).value
