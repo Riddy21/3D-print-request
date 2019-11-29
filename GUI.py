@@ -327,6 +327,7 @@ class Window():
         server.login(sender, password)
         server.sendmail(sender, self.patron_email, self.msg)
         server.quit()
+        #Ridddyboiii
 
         def DelayedPrinting(self, ticketNumEntry):
             self.row_number = self.wks.find(self.name).row
