@@ -79,6 +79,8 @@ class Window():
         # Define Patron Email parameter
         self.patron_email = ""
 
+        self.reasonEntry = ""
+
         # Assign Patron Email to variable
         # b = (getPatronEmail(patron_email))
         self.b = ""
@@ -130,9 +132,12 @@ class Window():
                   command=self.getInfo).pack()
         tk.Button(self.titleFrame, text="Reminder", width="40", pady="5", command=self.getInfo).pack()
         tk.Button(self.titleFrame, text="Failed", width="40", pady="5", command=self.getInfo).pack()
-        tk.Button(self.titleFrame, text="Picked Up", width="40", pady="5", command=self.getInfo).pack()
-        tk.Button(self.titleFrame, text="Never Picked Up", width="40", pady="5", command=self.getInfo).pack()
-        tk.Button(self.titleFrame, text="Cancelled", width="40", pady="5", command=self.getInfo).pack()
+        tk.Button(self.titleFrame, text="Picked Up", width="40", pady="5",
+                  command=lambda: self.getInfo(self.pickedUp, "Update Spreadsheet")).pack()
+        tk.Button(self.titleFrame, text="Never Picked Up", width="40", pady="5",
+                  command=lambda: self.getInfo(self.nevPickedUp, "Update Spreadsheet")).pack()
+        tk.Button(self.titleFrame, text="Cancelled", width="40", pady="5",
+                  command=lambda: self.getInfo2(self.cancelled, "Update Spreadsheet")).pack()
 
     def backToMenu(self):
         self.infoFrame.destroy()
@@ -176,6 +181,7 @@ class Window():
         nameEntry = tk.StringVar(self.infoFrame, value=self.name)
         ticketNumEntry = tk.StringVar(self.infoFrame, value = self.Ticketnum)
         emailEntry = tk.StringVar(self.infoFrame, value = self.patron_email)
+        reasonEntry = tk.StringVar
         tk.Label(self.infoFrame, text="Enter Ticket #:").pack()
         tk.Entry(self.infoFrame, textvariable=ticketNumEntry).pack()
         tk.Button(self.infoFrame, text="Search", command=lambda:self.findTicket(ticketNumEntry,function,text)).pack()
@@ -184,7 +190,7 @@ class Window():
         tk.Label(self.infoFrame, text="Enter Patron Email:").pack()
         tk.Entry(self.infoFrame, textvariable=emailEntry).pack()
         tk.Label(self.infoFrame, text="Enter Reason:").pack()
-        tk.
+        tk.Entry(self.infoFrame, textvariable=reasonEntry).pack()
         tk.Button(self.infoFrame, text = text, command = lambda:function(ticketNumEntry)).pack()
         tk.Button(self.infoFrame, text="Back to Menu", command=self.backToMenu).pack()
 
@@ -193,18 +199,19 @@ class Window():
         self.titleFrame.destroy()
         self.infoFrame = tk.Frame(self.window)
         self.infoFrame.pack()
-        nameEntry = tk.StringVar(self.infoFrame, value=self.name)
-        ticketNumEntry = tk.StringVar(self.infoFrame, value = self.Ticketnum)
-        emailEntry = tk.StringVar(self.infoFrame, value = self.patron_email)
+        self.nameEntry = tk.StringVar(self.infoFrame, value=self.name)
+        self.ticketNumEntry = tk.StringVar(self.infoFrame, value = self.Ticketnum)
+        self.emailEntry = tk.StringVar(self.infoFrame, value = self.patron_email)
         tk.Label(self.infoFrame, text="Enter Ticket #:").pack()
-        tk.Entry(self.infoFrame, textvariable=ticketNumEntry).pack()
-        tk.Button(self.infoFrame, text="Search", command=lambda:self.findTicket(ticketNumEntry,function,text)).pack()
+        tk.Entry(self.infoFrame, textvariable=self.ticketNumEntry).pack()
+        tk.Button(self.infoFrame, text="Search", command=lambda:self.findTicket(self.ticketNumEntry,function,text)).pack()
         tk.Label(self.infoFrame, text="Enter Patron Name:").pack()
-        tk.Entry(self.infoFrame, textvariable=nameEntry).pack()
+        tk.Entry(self.infoFrame, textvariable=self.nameEntry).pack()
         tk.Label(self.infoFrame, text="Enter Patron Email:").pack()
-        tk.Entry(self.infoFrame, textvariable=emailEntry).pack()
-        tk.Button(self.infoFrame, text = text, command = lambda:function(ticketNumEntry)).pack()
+        tk.Entry(self.infoFrame, textvariable=self.emailEntry).pack()
+        tk.Button(self.infoFrame, text = text, command = lambda:function(self.ticketNumEntry)).pack()
         tk.Button(self.infoFrame, text="Back to Menu", command=self.backToMenu).pack()
+
     def getInfoNewEntry(self):
         self.wks = self.workSDict[self.workSheet.get()]
         self.titleFrame.destroy()
@@ -422,12 +429,18 @@ class Window():
         print("Message Sent")
 
     def readyForPickup(self,ticketNumEntry):
-        self.row_number = self.wks.find(self.name).row
-        self.name = self.wks.cell(self.row_number, 2).value
-        self.patron_email = self.wks.cell(self.row_number, 3).value
-        self.Ticketnum = str(ticketNumEntry.get())
+        if(self.z == 1):
+            self.row_number = self.wks.find(ticketNumEntry).row
+            self.name = self.wks.cell(self.row_number, 2).value
+            self.patron_email = self.wks.cell(self.row_number, 3).value
+            self.Ticketnum = str(ticketNumEntry.get())
+            self.rowstr = str(self.row_number)
+            format_cell_range(self.wks, 'A' + self.rowstr + ':AC' + self.rowstr, self.fmtreadypickup)
+            self.wks.update_cell(self.row_number, 17, "Y")
+        else:
+            self.name = self.nameEntry.get()
+            self.patron_email = self.emailEntry.get()
 
-        self.rowstr = str(self.row_number)
         self.msg = "Content-Type: text/plain\nMIME-Version: 1.0\n"
         x1 = 1
         subject = "3D Print Request - Ready for Pickup"
@@ -444,8 +457,7 @@ class Window():
         LNMC = """library.mcmaster.ca/spaces/lyons"""
         self.msg += LNMC
         print("\n" + self.msg)
-        print(self.rowstr)
-        format_cell_range(self.wks, 'A' + self.rowstr + ':AC' + self.rowstr, self.fmtreadypickup)
+
         sender = "lyons.newmedia@gmail.com"
         password = "DigitalM3dia"
         server = smtplib.SMTP("smtp.gmail.com", 587)
@@ -466,9 +478,72 @@ class Window():
 
 
         print("Spreadsheet Updated")
-        self.wks.update_cell(self.row_number, 17, "Y")
-        print("Message Sent")
 
+        print("Message Sent")
+    def pickedUp(self, ticketNumEntry):
+        if (self.z == "1"):
+
+            self.row_number = self.wks.find(self.name).row
+            self.name = self.wks.cell(self.row_number, 2).value
+            self.patron_email = self.wks.cell(self.row_number, 3).value
+            self.Ticketnum = str(ticketNumEntry.get())
+
+            self.rowstr = str(self.row_number)
+
+            dateToday = date.today().strftime("%m/%d/%Y")
+            format_cell_range(self.wks, 'A' + self.rowstr + ':AC' + self.rowstr, self.fmtpickedup)
+            self.wks.update_cell(self.row_number, 18, dateToday)
+            print("3D Print has been picked up\n")
+            print("Spreadsheet Updated")
+            infoLab1 = tk.Label(self.infoFrame, text="Spreadsheet updated")
+            infoLab1.pack()
+            infoLab1.update()
+            time.sleep(1)
+            infoLab1.destroy()
+            self.infoFrame.destroy()
+            self.StartMenu()
+
+    def nevPickedUp(self, ticketNumEntry):
+        if (self.z == 1):
+            self.row_number = self.wks.find(self.name).row
+            self.name = self.wks.cell(self.row_number, 2).value
+            self.patron_email = self.wks.cell(self.row_number, 3).value
+            self.Ticketnum = str(ticketNumEntry.get())
+
+            self.rowstr = str(self.row_number)
+
+            self.wks.update_cell(self.row_number, 19, "Reminder email sent but never picked up")
+            format_cell_range(self.wks, 'A' + self.rowstr + ':AC' + self.rowstr, self.fmtneverpickedup)
+            print("3D Print has never been picked up")
+            print("Spreadsheet Updated")
+            infoLab1 = tk.Label(self.infoFrame, text="Spreadsheet updated")
+            infoLab1.pack()
+            infoLab1.update()
+            time.sleep(1)
+            infoLab1.destroy()
+            self.infoFrame.destroy()
+            self.StartMenu()
+
+    def cancelled(self, ticketNumEntry):
+        if (self.z == 1):
+            self.row_number = self.wks.find(self.name).row
+            self.name = self.wks.cell(self.row_number, 2).value
+            self.patron_email = self.wks.cell(self.row_number, 3).value
+            self.Ticketnum = str(ticketNumEntry.get())
+
+            self.rowstr = str(self.row_number)
+
+            self.wks.update_cell(self.row_number, 19, self.reason)
+            format_cell_range(self.wks, 'A' + self.rowstr + ':AC' + self.rowstr, self.fmtcancelled)
+            print("3D Print has been cancelled")
+            print("Spreadsheet Updated")
+            infoLab1 = tk.Label(self.infoFrame, text="Spreadsheet updated")
+            infoLab1.pack()
+            infoLab1.update()
+            time.sleep(1)
+            infoLab1.destroy()
+            self.infoFrame.destroy()
+            self.StartMenu()
     def findTicket(self,ticketNumEntry,function,text):
         self.Ticketnum = str(ticketNumEntry.get())
         # Exception Handling for when there's no match
@@ -501,5 +576,6 @@ class Window():
                 infoLab1.update()
                 time.sleep(1)
                 infoLab1.destroy()
+
 
 Window()
