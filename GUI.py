@@ -182,8 +182,9 @@ class Window():
         tk.Label(self.infoFrame, text="Enter Patron Name:").pack()
         tk.Entry(self.infoFrame, textvariable=nameEntry).pack()
         tk.Label(self.infoFrame, text="Enter Patron Email:").pack()
-
         tk.Entry(self.infoFrame, textvariable=emailEntry).pack()
+        tk.Label(self.infoFrame, text="Enter Reason:").pack()
+        tk.
         tk.Button(self.infoFrame, text = text, command = lambda:function(ticketNumEntry)).pack()
         tk.Button(self.infoFrame, text="Back to Menu", command=self.backToMenu).pack()
 
