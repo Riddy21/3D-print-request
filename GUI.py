@@ -352,7 +352,7 @@ class Window():
             self.msg += LNMC
             print("\n" + self.msg)
             print(self.rowstr)
-            format_cell_range(self.wks, 'A' + self.rowstr + ':AC' + self.rowstr, self.fmtreadypickup)
+            format_cell_range(self.wks, 'A' + self.rowstr + ':AC' + self.rowstr, self.fmtdelayed)
             sender = "lyons.newmedia@gmail.com"
             password = "DigitalM3dia"
             server = smtplib.SMTP("smtp.gmail.com", 587)
