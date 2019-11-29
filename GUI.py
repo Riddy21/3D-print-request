@@ -295,7 +295,7 @@ class Window():
         infoLab1.destroy()
         self.infoFrame.destroy()
         self.StartMenu()
-
+#
     def DelayedPrinting(self, ticketNumEntry):
         self.row_number = self.wks.find(self.name).row
         self.name = self.wks.cell(self.row_number, 2).value
