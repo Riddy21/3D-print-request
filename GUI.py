@@ -11,7 +11,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
 from datetime import date
-#boopdffd
+
 
 class Window():
     def __init__(self):
@@ -368,7 +368,6 @@ class Window():
         print("Spreadsheet Updated")
         self.wks.update_cell(self.row_number, 17, "Y")
         print("Message Sent")
-
     def findTicket(self,ticketNumEntry,function,text):
         self.Ticketnum = str(ticketNumEntry.get())
         # Exception Handling for when there's no match
