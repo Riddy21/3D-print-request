@@ -123,7 +123,7 @@ class Window():
         tk.Button(self.titleFrame, text="New Submission Processing", width="40", pady="5", command = self.getInfoNewEntry).pack()
         tk.Button(self.titleFrame, text="Ready For Pickup", width="40", pady="5", command=lambda:self.getInfo(self.readyForPickup,"Send Email")).pack()
         tk.Button(self.titleFrame, text="Delay Printing", width="40", pady="5", command=lambda:self.getInfo(self.DelayedPrinting,"Send Email")).pack()
-        tk.Button(self.titleFrame, text="Denied", width="40", pady="5", command=self.getInfo).pack()
+        tk.Button(self.titleFrame, text="Denied", width="40", pady="5", command=lambda:self.getInfo(self.Denied,"Send Email")).pack()
         tk.Button(self.titleFrame, text="Dimensions Clarification - Skewed Print", width="40", pady="5",
                   command=self.getInfo).pack()
         tk.Button(self.titleFrame, text="Dimensions Clarification - Large Print", width="40", pady="5",
@@ -167,6 +167,25 @@ class Window():
 
         self.x1 = ""
         self.StartMenu()
+
+    def getInfo2(self,function,text):
+        self.wks = self.workSDict[self.workSheet.get()]
+        self.titleFrame.destroy()
+        self.infoFrame = tk.Frame(self.window)
+        self.infoFrame.pack()
+        nameEntry = tk.StringVar(self.infoFrame, value=self.name)
+        ticketNumEntry = tk.StringVar(self.infoFrame, value = self.Ticketnum)
+        emailEntry = tk.StringVar(self.infoFrame, value = self.patron_email)
+        tk.Label(self.infoFrame, text="Enter Ticket #:").pack()
+        tk.Entry(self.infoFrame, textvariable=ticketNumEntry).pack()
+        tk.Button(self.infoFrame, text="Search", command=lambda:self.findTicket(ticketNumEntry,function,text)).pack()
+        tk.Label(self.infoFrame, text="Enter Patron Name:").pack()
+        tk.Entry(self.infoFrame, textvariable=nameEntry).pack()
+        tk.Label(self.infoFrame, text="Enter Patron Email:").pack()
+
+        tk.Entry(self.infoFrame, textvariable=emailEntry).pack()
+        tk.Button(self.infoFrame, text = text, command = lambda:function(ticketNumEntry)).pack()
+        tk.Button(self.infoFrame, text="Back to Menu", command=self.backToMenu).pack()
 
     def getInfo(self,function,text):
         self.wks = self.workSDict[self.workSheet.get()]
@@ -295,11 +314,20 @@ class Window():
         infoLab1.destroy()
         self.infoFrame.destroy()
         self.StartMenu()
+    def save(self,window):
+        window.destroy()
     def Denied(self, ticketNumEntry):
         self.row_number = self.wks.find(self.name).row
         self.name = self.wks.cell(self.row_number, 2).value
         self.patron_email = self.wks.cell(self.row_number, 3).value
         self.Ticketnum = str(ticketNumEntry.get())
+
+        window = tk.Tk()
+        window.title("Denied Reason")
+        window.geometry("300x300")
+        window.resizable(0, 0)
+        tk.Label(window,text = "Hello").pack()
+        tk.Button(window,text = "Submit", command = lambda: self.save(window)).pack()
 
         self.rowstr = str(self.row_number)
         self.msg = "Content-Type: text/plain\nMIME-Version: 1.0\n"
