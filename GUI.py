@@ -389,7 +389,6 @@ class Window():
         infoLab1.destroy()
         self.infoFrame.destroy()
         self.StartMenu()
-
     def findTicket(self,ticketNumEntry,function,text):
         self.Ticketnum = str(ticketNumEntry.get())
         # Exception Handling for when there's no match
