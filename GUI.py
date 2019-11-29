@@ -122,7 +122,7 @@ class Window():
 
         tk.Button(self.titleFrame, text="New Submission Processing", width="40", pady="5", command = self.getInfoNewEntry).pack()
         tk.Button(self.titleFrame, text="Ready For Pickup", width="40", pady="5", command=lambda:self.getInfo(self.readyForPickup,"Send Email")).pack()
-        tk.Button(self.titleFrame, text="Delay Printing", width="40", pady="5", command=self.getInfo).pack()
+        tk.Button(self.titleFrame, text="Delay Printing", width="40", pady="5", command=lambda:self.getInfo(self.DelayedPrinting,"Send Email")).pack()
         tk.Button(self.titleFrame, text="Denied", width="40", pady="5", command=self.getInfo).pack()
         tk.Button(self.titleFrame, text="Dimensions Clarification - Skewed Print", width="40", pady="5",
                   command=self.getInfo).pack()
@@ -327,6 +327,39 @@ class Window():
         server.login(sender, password)
         server.sendmail(sender, self.patron_email, self.msg)
         server.quit()
+
+        def DelayedPrinting(self, ticketNumEntry):
+            self.row_number = self.wks.find(self.name).row
+            self.name = self.wks.cell(self.row_number, 2).value
+            self.patron_email = self.wks.cell(self.row_number, 3).value
+            self.Ticketnum = str(ticketNumEntry.get())
+
+            self.rowstr = str(self.row_number)
+            self.msg = "Content-Type: text/plain\nMIME-Version: 1.0\n"
+            x1 = 1
+            subject = "3D Print Request - Ready for Pickup"
+            self.msg += "Subject: " + subject + '\n\n'
+            body1 = "Hi " + self.name + ",\n\nGood news! The following requested 3D print job has been printed successfully:\n\n"
+            body1 += "Ticket #: " + self.Ticketnum + "\n\nPlease bring this email and your McMaster ID card with you to the Help Desk " \
+                                                     "in Lyons New Media Centre (Mills Library, 4th floor) to retrieve your item.\n\n"
+            body1 += "You will be required to sign for it, so a proxy cannot come to pick this up for you.\n\nWe will hold this " \
+                     "item for no more than 30 days from today's date before it is reclaimed and/or recycled.  " \
+                     "If you cannot make it into the Centre due to work/being home etc., please let us know and we can arrange to " \
+                     "hold onto it until you can make it in.\n\nSincerely,\n\nLyons New Media Centre Staff\n\n"
+            body1 += "-- \n\nLyons New Media Centre\n\n4th Floor, Mills Library\n\n"
+            self.msg += body1
+            LNMC = """library.mcmaster.ca/spaces/lyons"""
+            self.msg += LNMC
+            print("\n" + self.msg)
+            print(self.rowstr)
+            format_cell_range(self.wks, 'A' + self.rowstr + ':AC' + self.rowstr, self.fmtreadypickup)
+            sender = "lyons.newmedia@gmail.com"
+            password = "DigitalM3dia"
+            server = smtplib.SMTP("smtp.gmail.com", 587)
+            server.starttls()
+            server.login(sender, password)
+            server.sendmail(sender, self.patron_email, self.msg)
+            server.quit()
 
 
         print("Spreadsheet Updated")
