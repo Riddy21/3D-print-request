@@ -130,7 +130,7 @@ class Window():
                   command=self.getInfo).pack()
         tk.Button(self.titleFrame, text="Reminder", width="40", pady="5", command=self.getInfo).pack()
         tk.Button(self.titleFrame, text="Failed", width="40", pady="5", command=self.getInfo).pack()
-        tk.Button(self.titleFrame, text="Picked Up", width="40", pady="5", command=self.getInfo).pack()
+        tk.Button(self.titleFrame, text="Picked Up", width="40", pady="5", command=self.getInfo(self.pickedUP,"Update Spreadsheet")).pack()
         tk.Button(self.titleFrame, text="Never Picked Up", width="40", pady="5", command=self.getInfo).pack()
         tk.Button(self.titleFrame, text="Cancelled", width="40", pady="5", command=self.getInfo).pack()
 
@@ -368,6 +368,27 @@ class Window():
         print("Spreadsheet Updated")
         self.wks.update_cell(self.row_number, 17, "Y")
         print("Message Sent")
+
+    def pickedUp(self, ticketNumEntry):
+        self.row_number = self.wks.find(self.name).row
+        self.name = self.wks.cell(self.row_number, 2).value
+        self.patron_email = self.wks.cell(self.row_number, 3).value
+        self.Ticketnum = str(ticketNumEntry.get())
+
+        self.rowstr = str(self.row_number)
+
+        dateToday = date.today().strftime("%m/%d/%Y")
+        format_cell_range(self.wks, 'A' + self.rowstr + ':AC' + self.rowstr, self.fmtpickedup)
+        self.wks.update_cell(self.row_number, 18, dateToday)
+        print("3D Print has been picked up\n")
+        print("Spreadsheet Updated")
+        infoLab1 = tk.Label(self.infoFrame, text="Spreadsheet updated")
+        infoLab1.pack()
+        infoLab1.update()
+        time.sleep(1)
+        infoLab1.destroy()
+        self.infoFrame.destroy()
+        self.StartMenu()
     def findTicket(self,ticketNumEntry,function,text):
         self.Ticketnum = str(ticketNumEntry.get())
         # Exception Handling for when there's no match
