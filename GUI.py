@@ -272,9 +272,9 @@ class Window:
         tk.Label(self.infoFrame, text="Enter Patron Email:").pack()
         tk.Entry(self.infoFrame, textvariable=self.emailEntry).pack()
         tk.Label(self.infoFrame, text="Date of original message:").pack()
-        tk.Entry(self.infoFrame, textvariable=dateEntry1, width=9).pack()
+        tk.Entry(self.infoFrame, textvariable=dateEntry1, width=15).pack()
         tk.Label(self.infoFrame, text="Last date to pickup print:").pack()
-        tk.Entry(self.infoFrame, textvariable=dateEntry2, width=9).pack()
+        tk.Entry(self.infoFrame, textvariable=dateEntry2, width=15).pack()
         tk.Button(self.infoFrame, text=text, command=lambda: function(ticketNumEntry, dateEntry1, dateEntry2)).pack()
         tk.Button(self.infoFrame, text="Back to Menu", command=self.backToMenu).pack()
 
@@ -298,7 +298,7 @@ class Window:
         tk.Label(self.infoFrame, text="Enter Patron Email:").pack()
         tk.Entry(self.infoFrame, textvariable=self.emailEntry).pack()
         tk.Label(self.infoFrame, text="Cancel Request if Patron doesn't respond by:").pack()
-        tk.Entry(self.infoFrame, textvariable=responseDate, width=15).pack()
+        tk.Entry(self.infoFrame, textvariable=responseDate, width=20).pack()
         tk.Button(self.infoFrame, text=text, command=lambda: function(ticketNumEntry, responseDate)).pack()
         tk.Button(self.infoFrame, text="Back to Menu", command=self.backToMenu).pack()
 
