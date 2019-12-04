@@ -315,6 +315,7 @@ class Window:
         tk.Button(self.infoFrame, text=text, command=function).pack()
         tk.Button(self.infoFrame, text="Back to Menu", command=self.destroyFrame).pack()
 
+
     def destroyFrame(self):
         self.infoFrame.destroy()
         self.backToMenu()
