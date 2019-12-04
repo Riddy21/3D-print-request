@@ -359,7 +359,7 @@ class Window:
         infoLab1.update()
         self.infoFrame.after(1000, infoLab1.destroy())
         self.infoFrame.destroy()
-        self.backToMenu()
+        self.StartMenu()
 
     def readyForPickup(self):
         if self.z == "1":
@@ -399,14 +399,14 @@ class Window:
             infoLab2.update()
             self.infoFrame.after(2000, infoLab2.destroy())
             self.infoFrame.destroy()
-            self.backToMenu()
+            self.StartMenu()
         else:
             infoLab1 = tk.Label(self.infoFrame, text="Message Sent!")
             infoLab1.pack()
             infoLab1.update()
             self.infoFrame.after(2000, infoLab1.destroy())
             self.infoFrame.destroy()
-            self.backToMenu()
+            self.StartMenu()
 
     def DelayedPrinting(self):
         if self.z == "1":
@@ -450,14 +450,14 @@ class Window:
             infoLab2.update()
             self.infoFrame.after(2000, infoLab2.destroy())
             self.infoFrame.destroy()
-            self.backToMenu()
+            self.StartMenu()
         else:
             infoLab1 = tk.Label(self.infoFrame, text="Message Sent!")
             infoLab1.pack()
             infoLab1.update()
             self.infoFrame.after(2000, infoLab1.destroy())
             self.infoFrame.destroy()
-            self.backToMenu()
+            self.StartMenu()
 
     def Denied(self):
         if self.z == "1":
@@ -494,14 +494,14 @@ class Window:
             infoLab2.update()
             self.infoFrame.after(2000, infoLab2.destroy())
             self.infoFrame.destroy()
-            self.backToMenu()
+            self.StartMenu()
         else:
             infoLab1 = tk.Label(self.infoFrame, text="Message Sent!")
             infoLab1.pack()
             infoLab1.update()
             self.infoFrame.after(2000, infoLab1.destroy())
             self.infoFrame.destroy()
-            self.backToMenu()
+            self.StartMenu()
 
     def Clarification_Skewed(self):
         if self.z == "1":
@@ -542,14 +542,14 @@ class Window:
             infoLab2.update()
             self.infoFrame.after(2000, infoLab2.destroy())
             self.infoFrame.destroy()
-            self.backToMenu()
+            self.StartMenu()
         else:
             infoLab1 = tk.Label(self.infoFrame, text="Message Sent!")
             infoLab1.pack()
             infoLab1.update()
             self.infoFrame.after(2000, infoLab1.destroy())
             self.infoFrame.destroy()
-            self.backToMenu()
+            self.StartMenu()
 
     def Clarification_Large(self):
         if self.z == "1":
@@ -591,14 +591,14 @@ class Window:
             infoLab2.update()
             self.infoFrame.after(2000, infoLab2.destroy())
             self.infoFrame.destroy()
-            self.backToMenu()
+            self.StartMenu()
         else:
             infoLab1 = tk.Label(self.infoFrame, text="Message Sent!")
             infoLab1.pack()
             infoLab1.update()
             self.infoFrame.after(2000, infoLab1.destroy())
             self.infoFrame.destroy()
-            self.backToMenu()
+            self.StartMenu()
 
     def Reminder(self):
         if self.z == "1":
@@ -639,14 +639,14 @@ class Window:
             infoLab2.update()
             self.infoFrame.after(2000, infoLab2.destroy())
             self.infoFrame.destroy()
-            self.backToMenu()
+            self.StartMenu()
         else:
             infoLab1 = tk.Label(self.infoFrame, text="Message Sent!")
             infoLab1.pack()
             infoLab1.update()
             self.infoFrame.after(2000, infoLab1.destroy())
             self.infoFrame.destroy()
-            self.backToMenu()
+            self.StartMenu()
 
     def Failed(self):
         if self.z == "1":
@@ -683,14 +683,14 @@ class Window:
             infoLab2.update()
             self.infoFrame.after(2000, infoLab2.destroy())
             self.infoFrame.destroy()
-            self.backToMenu()
+            self.StartMenu()
         else:
             infoLab1 = tk.Label(self.infoFrame, text="Message Sent!")
             infoLab1.pack()
             infoLab1.update()
             self.infoFrame.after(2000, infoLab1.destroy())
             self.infoFrame.destroy()
-            self.backToMenu()
+            self.StartMenu()
 
     def pickedUp(self):
         if self.z == "1":
@@ -707,14 +707,14 @@ class Window:
             infoLab2.update()
             self.infoFrame.after(2000, infoLab2.destroy())
             self.infoFrame.destroy()
-            self.backToMenu()
+            self.StartMenu()
         else:
             infoLab1 = tk.Label(self.infoFrame, text="Ticket not found, unable to update spreadsheet")
             infoLab1.pack()
             infoLab1.update()
             self.infoFrame.after(2000, infoLab1.destroy())
             self.infoFrame.destroy()
-            self.backToMenu()
+            self.StartMenu()
 
     def nevPickedUp(self):
         if self.z == "1":
@@ -730,14 +730,14 @@ class Window:
             infoLab2.update()
             self.infoFrame.after(2000, infoLab2.destroy())
             self.infoFrame.destroy()
-            self.backToMenu()
+            self.StartMenu()
         else:
             infoLab1 = tk.Label(self.infoFrame, text="Ticket not found, unable to update spreadsheet")
             infoLab1.pack()
             infoLab1.update()
             self.infoFrame.after(2000, infoLab1.destroy())
             self.infoFrame.destroy()
-            self.backToMenu()
+            self.StartMenu()
 
     def cancelled(self):
         if self.z == "1":
@@ -755,14 +755,14 @@ class Window:
             infoLab2.update()
             self.infoFrame.after(2000, infoLab2.destroy())
             self.infoFrame.destroy()
-            self.backToMenu()
+            self.StartMenu()
         else:
             infoLab1 = tk.Label(self.infoFrame, text="Ticket not found, unable to update spreadsheet")
             infoLab1.pack()
             infoLab1.update()
             self.infoFrame.after(2000, infoLab1.destroy())
             self.infoFrame.destroy()
-            self.backToMenu()
+            self.StartMenu()
 
     def findTicket(self, function, text, title, option):
         self.Ticketnum = str(self.ticketNumEntry.get())
