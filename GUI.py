@@ -1,6 +1,6 @@
 import gc
 import time
-import tkinter as tk
+import _tkinter as tk
 # intsall:oauth2client, gspread, PyOpenSSL, gspread-formatting
 import gspread
 from gspread_formatting import *
@@ -130,9 +130,9 @@ class Window():
                   command=self.getInfo).pack()
         tk.Button(self.titleFrame, text="Reminder", width="40", pady="5", command=self.getInfo).pack()
         tk.Button(self.titleFrame, text="Failed", width="40", pady="5", command=self.getInfo).pack()
-        tk.Button(self.titleFrame, text="Picked Up", width="40", pady="5", command=self.getInfo(self.pickedUP,"Update Spreadsheet")).pack()
-        tk.Button(self.titleFrame, text="Never Picked Up", width="40", pady="5", command=self.getInfo).pack()
-        tk.Button(self.titleFrame, text="Cancelled", width="40", pady="5", command=self.getInfo).pack()
+        tk.Button(self.titleFrame, text="Picked Up", width="40", pady="5", command=lambda: self.getInfo(self.pickedUP,"Update Spreadsheet")).pack()
+        tk.Button(self.titleFrame, text="Never Picked Up", width="40", pady="5", command = lambda: self.getInfo(self.nevPickedUp,"Update Spreadsheet")).pack()
+        tk.Button(self.titleFrame, text="Cancelled", width="40", pady="5", command=lambda: self.getInfo2(self.cancelled, "Update Spreadsheet")).pack()
 
     def backToMenu(self):
         self.infoFrame.destroy()
@@ -370,25 +370,67 @@ class Window():
         print("Message Sent")
 
     def pickedUp(self, ticketNumEntry):
-        self.row_number = self.wks.find(self.name).row
-        self.name = self.wks.cell(self.row_number, 2).value
-        self.patron_email = self.wks.cell(self.row_number, 3).value
-        self.Ticketnum = str(ticketNumEntry.get())
+        if (self.z == 1):
+            self.row_number = self.wks.find(self.name).row
+            self.name = self.wks.cell(self.row_number, 2).value
+            self.patron_email = self.wks.cell(self.row_number, 3).value
+            self.Ticketnum = str(ticketNumEntry.get())
 
-        self.rowstr = str(self.row_number)
+            self.rowstr = str(self.row_number)
 
-        dateToday = date.today().strftime("%m/%d/%Y")
-        format_cell_range(self.wks, 'A' + self.rowstr + ':AC' + self.rowstr, self.fmtpickedup)
-        self.wks.update_cell(self.row_number, 18, dateToday)
-        print("3D Print has been picked up\n")
-        print("Spreadsheet Updated")
-        infoLab1 = tk.Label(self.infoFrame, text="Spreadsheet updated")
-        infoLab1.pack()
-        infoLab1.update()
-        time.sleep(1)
-        infoLab1.destroy()
-        self.infoFrame.destroy()
-        self.StartMenu()
+            dateToday = date.today().strftime("%m/%d/%Y")
+            format_cell_range(self.wks, 'A' + self.rowstr + ':AC' + self.rowstr, self.fmtpickedup)
+            self.wks.update_cell(self.row_number, 18, dateToday)
+            print("3D Print has been picked up\n")
+            print("Spreadsheet Updated")
+            infoLab1 = tk.Label(self.infoFrame, text="Spreadsheet updated")
+            infoLab1.pack()
+            infoLab1.update()
+            time.sleep(1)
+            infoLab1.destroy()
+            self.infoFrame.destroy()
+            self.StartMenu()
+    def nevPickedUp(self, ticketNumEntry):
+        if (self.z == 1):
+            self.row_number = self.wks.find(self.name).row
+            self.name = self.wks.cell(self.row_number, 2).value
+            self.patron_email = self.wks.cell(self.row_number, 3).value
+            self.Ticketnum = str(ticketNumEntry.get())
+
+            self.rowstr = str(self.row_number)
+
+            self.wks.update_cell(self.row_number, 19, "Reminder email sent but never picked up")
+            format_cell_range(self.wks, 'A' + self.rowstr + ':AC' + self.rowstr, self.fmtneverpickedup)
+            print("3D Print has never been picked up")
+            print("Spreadsheet Updated")
+            infoLab1 = tk.Label(self.infoFrame, text="Spreadsheet updated")
+            infoLab1.pack()
+            infoLab1.update()
+            time.sleep(1)
+            infoLab1.destroy()
+            self.infoFrame.destroy()
+            self.StartMenu()
+    def cancelled(self, ticketNumEntry):
+        if(self.z == 1):
+            self.row_number = self.wks.find(self.name).row
+            self.name = self.wks.cell(self.row_number, 2).value
+            self.patron_email = self.wks.cell(self.row_number, 3).value
+            self.Ticketnum = str(ticketNumEntry.get())
+
+            self.rowstr = str(self.row_number)
+
+            self.wks.update_cell(self.row_number, 19, self.reason)
+            format_cell_range(self.wks, 'A' + self.rowstr + ':AC' + self.rowstr, self.fmtcancelled)
+            print("3D Print has been cancelled")
+            print("Spreadsheet Updated")
+            infoLab1 = tk.Label(self.infoFrame, text="Spreadsheet updated")
+            infoLab1.pack()
+            infoLab1.update()
+            time.sleep(1)
+            infoLab1.destroy()
+            self.infoFrame.destroy()
+            self.StartMenu()
+
     def findTicket(self,ticketNumEntry,function,text):
         self.Ticketnum = str(ticketNumEntry.get())
         # Exception Handling for when there's no match
